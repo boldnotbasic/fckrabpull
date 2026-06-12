@@ -35,7 +35,7 @@ export default async function PlayersPage() {
         </div>
 
         <header className="mb-8">
-          <h1 className="text-4xl font-bold mb-2 flex items-center gap-3" style={{ color: '#d4a517' }}>
+          <h1 className="text-4xl font-bold mb-2 flex items-center gap-3 gradient-text">
             <Users className="h-10 w-10" /> Spelers
           </h1>
           <p className="text-sm" style={{ color: 'oklch(0.65 0.05 280)' }}>Ons team voor dit seizoen</p>

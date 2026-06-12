@@ -37,8 +37,8 @@ export default async function MatchesPage() {
   }
 
   return (
-    <div className="">
-      <div className="">
+    <div>
+      <div className="container mx-auto px-4 py-8">
         <div className="mb-6">
           <Link href="/">
             <Button variant="ghost" className="gap-2">
@@ -49,10 +49,10 @@ export default async function MatchesPage() {
         </div>
 
         <header className="mb-8">
-          <h1 className="text-4xl font-bold mb-2 flex items-center gap-3" style={{ color: '#d4a517' }}>
+          <h1 className="text-4xl font-bold mb-2 flex items-center gap-3 gradient-text">
             <CalendarIcon className="h-10 w-10" /> Matchen
           </h1>
-          <p className="text-zinc-600 dark:text-zinc-400">
+          <p className="text-sm" style={{ color: 'oklch(0.65 0.05 280)' }}>
             Wedstrijdkalender en resultaten
           </p>
         </header>
@@ -60,7 +60,7 @@ export default async function MatchesPage() {
         {!matches || matches.length === 0 ? (
           <Card className="backdrop-blur-xl bg-white/10 border-white/10">
             <CardContent className="py-8">
-              <p className="text-center text-zinc-300">
+              <p className="text-center" style={{ color: 'oklch(0.65 0.05 280)' }}>
                 Nog geen matchen ingepland. Admins kunnen matchen toevoegen via het admin panel.
               </p>
             </CardContent>
@@ -73,14 +73,14 @@ export default async function MatchesPage() {
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-2">
-                        <CalendarIcon className="h-4 w-4 text-zinc-500" />
-                        <span className="text-sm text-zinc-300">
+                        <CalendarIcon className="h-4 w-4" style={{ color: 'oklch(0.65 0.05 280)' }} />
+                        <span className="text-sm" style={{ color: 'oklch(0.65 0.05 280)' }}>
                           {format(new Date(match.date), 'EEEE d MMMM yyyy', { locale: nl })} - {match.kickoff}
                         </span>
                       </div>
-                      <CardTitle className="text-2xl mb-2 flex items-center gap-3">
+                      <CardTitle className="text-2xl mb-2 flex items-center gap-3 text-white">
                         {match.is_home ? 'FC Krabpull' : (match.teams?.name || match.opponent)}
-                        <span className="text-zinc-400">vs</span>
+                        <span style={{ color: 'oklch(0.65 0.05 280)' }}>vs</span>
                         {match.is_home ? (match.teams?.name || match.opponent) : 'FC Krabpull'}
                         {match.teams?.emblem_url && (
                           // eslint-disable-next-line @next/next/no-img-element
@@ -88,7 +88,7 @@ export default async function MatchesPage() {
                         )}
                       </CardTitle>
                       {match.venue && (
-                        <div className="flex items-center gap-2 text-sm text-zinc-300">
+                        <div className="flex items-center gap-2 text-sm" style={{ color: 'oklch(0.65 0.05 280)' }}>
                           <MapPin className="h-4 w-4" />
                           {match.venue}
                         </div>
@@ -97,7 +97,7 @@ export default async function MatchesPage() {
                     <div className="text-right">
                       {getStatusBadge(match.status)}
                       {match.status === 'finished' && match.our_score !== null && (
-                        <div className="text-3xl font-bold mt-2">
+                        <div className="text-3xl font-bold mt-2 text-white">
                           {match.our_score} - {match.opponent_score}
                         </div>
                       )}
