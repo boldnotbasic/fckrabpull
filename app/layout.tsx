@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import Link from "next/link";
 import NavSidebar from "@/components/NavSidebar";
 import SplashScreen from "@/components/SplashScreen";
+import PWAInstall from "@/components/pwa/PWAInstall";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,6 +17,8 @@ export const metadata: Metadata = {
   icons: {
     icon: "/favicon.png",
   },
+  manifest: "/manifest.webmanifest",
+  themeColor: "#12060a",
 };
 
 export default function RootLayout({
@@ -27,6 +30,7 @@ export default function RootLayout({
     <html lang="nl" className={`${geistSans.variable} h-full antialiased`}>
       <body className="flex min-h-screen">
         <SplashScreen />
+        <PWAInstall />
         <NavSidebar />
 
         {/* Main area */}
