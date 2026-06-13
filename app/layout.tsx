@@ -16,6 +16,7 @@ export const metadata: Metadata = {
   description: "Zaalvoetbal team management",
   icons: {
     icon: "/favicon.png",
+    apple: "/favicon.png",
   },
   manifest: "/manifest.webmanifest",
   themeColor: "#12060a",
