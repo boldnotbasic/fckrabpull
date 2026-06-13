@@ -16,10 +16,15 @@ export const metadata: Metadata = {
   description: "Zaalvoetbal team management",
   icons: {
     icon: "/favicon.png",
-    apple: "/icon-192.png",
+    apple: "/apple-touch-icon.png",
   },
   manifest: "/manifest.webmanifest",
   themeColor: "#12060a",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "FC Krabpull",
+  },
 };
 
 export default function RootLayout({
