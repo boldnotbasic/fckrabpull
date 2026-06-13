@@ -166,12 +166,12 @@ export default async function Home() {
       </div>
 
       {/* Nav cards grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {navCards.map(({ href, icon: Icon, label, desc, gradient }) => (
           <Link
             key={href}
             href={href}
-            className="group rounded-2xl p-5 flex flex-col gap-4 transition-all duration-200 hover:scale-[1.02] hover:shadow-2xl"
+            className="group rounded-2xl p-5 flex flex-col gap-4 transition-all duration-200 hover:scale-[1.02] hover:shadow-2xl block"
             style={glass}
           >
             <div
@@ -190,34 +190,6 @@ export default async function Home() {
           </Link>
         ))}
       </div>
-
-      {/* Trophy Cabinet */}
-      {trophies && trophies.length > 0 && (
-        <div>
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold flex items-center gap-2" style={{ color: '#d4a517' }}>
-              <Trophy className="h-7 w-7" /> Trofeënkast
-            </h2>
-            <Link href="/admin/trophies" className="text-xs flex items-center gap-1 hover:text-white transition-colors" style={{ color: 'oklch(0.65 0.05 280)' }}>
-              Beheer <ArrowRight className="h-3 w-3" />
-            </Link>
-          </div>
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-            {trophies.map((trophy: any) => (
-              <div key={trophy.id} className="rounded-2xl p-5 text-center" style={glass}>
-                {trophy.image_url && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={trophy.image_url} alt={trophy.title} className="h-24 w-full object-contain mb-3" />
-                )}
-                <h3 className="font-semibold text-white text-sm mb-1">{trophy.title}</h3>
-                {trophy.season && (
-                  <p className="text-xs" style={{ color: 'oklch(0.65 0.05 280)' }}>{trophy.season}</p>
-                )}
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* Leaderboard widgets */}
       <div>
@@ -344,6 +316,34 @@ export default async function Home() {
           </div>
         </div>
       </div>
+
+      {/* Trophy Cabinet */}
+      {trophies && trophies.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold flex items-center gap-2" style={{ color: '#d4a517' }}>
+              <Trophy className="h-7 w-7" /> Trofeënkast
+            </h2>
+            <Link href="/admin/trophies" className="text-xs flex items-center gap-1 hover:text-white transition-colors" style={{ color: 'oklch(0.65 0.05 280)' }}>
+              Beheer <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {trophies.map((trophy: any) => (
+              <div key={trophy.id} className="rounded-2xl p-5 text-center" style={glass}>
+                {trophy.image_url && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={trophy.image_url} alt={trophy.title} className="h-24 w-full object-contain mb-3" />
+                )}
+                <h3 className="font-semibold text-white text-sm mb-1">{trophy.title}</h3>
+                {trophy.season && (
+                  <p className="text-xs" style={{ color: 'oklch(0.65 0.05 280)' }}>{trophy.season}</p>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Footer links */}
       <div className="flex gap-4 text-xs pt-2" style={{ color: 'oklch(0.55 0.05 280)' }}>

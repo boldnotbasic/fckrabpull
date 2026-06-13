@@ -13,6 +13,9 @@ const geistSans = Geist({
 export const metadata: Metadata = {
   title: "FC Krabpull",
   description: "Zaalvoetbal team management",
+  icons: {
+    icon: "/favicon.png",
+  },
 };
 
 export default function RootLayout({
