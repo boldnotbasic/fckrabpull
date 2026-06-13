@@ -24,8 +24,8 @@ export default function SplashScreen() {
         <Image
           src="/Logo%20ZVC.png"
           alt="FC Krabpull"
-          width={200}
-          height={200}
+          width={280}
+          height={280}
           priority
           className="rounded-2xl shadow-2xl"
         />

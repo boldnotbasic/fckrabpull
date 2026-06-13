@@ -235,7 +235,7 @@ export default async function Home() {
                   const url = avatarMap.get(topScorer.player_id)
                   return url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={url} alt={topScorer.player_name} className="h-10 w-10 rounded-full object-cover" />
+                    <img src={url} alt={topScorer.player_name} className="h-20 w-20 object-contain" />
                   ) : (
                     <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold" style={{ background: 'linear-gradient(135deg, oklch(0.6 0.2 80), oklch(0.5 0.22 50))' }}>
                       {topScorer.player_name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
@@ -265,7 +265,7 @@ export default async function Home() {
                   const url = avatarMap.get(topAssist.player_id)
                   return url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={url} alt={topAssist.player_name} className="h-10 w-10 rounded-full object-cover" />
+                    <img src={url} alt={topAssist.player_name} className="h-20 w-20 object-contain" />
                   ) : (
                     <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold" style={{ background: 'linear-gradient(135deg, oklch(0.5 0.2 270), oklch(0.4 0.22 290))' }}>
                       {topAssist.player_name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
@@ -295,7 +295,7 @@ export default async function Home() {
                   const url = avatarMap.get(topAttendance.player_id)
                   return url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={url} alt={topAttendance.player_name} className="h-10 w-10 rounded-full object-cover" />
+                    <img src={url} alt={topAttendance.player_name} className="h-20 w-20 object-contain" />
                   ) : (
                     <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold" style={{ background: 'linear-gradient(135deg, oklch(0.55 0.22 25), oklch(0.5 0.2 340))' }}>
                       {topAttendance.player_name.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
@@ -325,7 +325,7 @@ export default async function Home() {
                   const url = avatarMap.get(motmKing.player_id)
                   return url ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={url} alt={motmKing.full_name} className="h-10 w-10 rounded-full object-cover" />
+                    <img src={url} alt={motmKing.full_name} className="h-20 w-20 object-contain" />
                   ) : (
                     <div className="w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold" style={{ background: 'linear-gradient(135deg, oklch(0.55 0.22 25), oklch(0.5 0.2 340))' }}>
                       {String(motmKing.full_name).split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()}
