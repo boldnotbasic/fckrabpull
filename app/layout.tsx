@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Link from "next/link";
 import NavSidebar from "@/components/NavSidebar";
+import SplashScreen from "@/components/SplashScreen";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -22,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="nl" className={`${geistSans.variable} h-full antialiased`}>
       <body className="flex min-h-screen">
+        <SplashScreen />
         <NavSidebar />
 
         {/* Main area */}

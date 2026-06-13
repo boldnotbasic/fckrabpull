@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
 import { Trophy, Calendar, Users, Award, Home, Info, Settings, Shield } from "lucide-react"
 import UserIndicator from "./UserIndicator"
@@ -53,11 +54,8 @@ export default function NavSidebar() {
       {/* Logo */}
       <div className="px-5 py-6 border-b border-white/10">
         <Link href="/" className="flex items-center gap-3">
-          <div
-            className="w-9 h-9 rounded-xl flex items-center justify-center text-sm font-bold text-white"
-            style={{ background: "linear-gradient(135deg, oklch(0.72 0.2 305), oklch(0.6 0.22 25))" }}
-          >
-            FK
+          <div className="w-10 h-10 rounded-xl overflow-hidden bg-black/20 border border-white/10 flex items-center justify-center">
+            <Image src="/Logo%20ZVC.png" alt="FC Krabpull" width={40} height={40} />
           </div>
           <div>
             <div className="font-semibold text-sm text-white leading-tight">FC Krabpull</div>
