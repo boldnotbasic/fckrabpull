@@ -13,6 +13,7 @@ export default function LoginPage() {
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
+  const [resetMode, setResetMode] = useState(false)
 
   async function signIn(e: React.FormEvent) {
     e.preventDefault()
@@ -29,6 +30,18 @@ export default function LoginPage() {
     setMessage('Uitgelogd')
   }
 
+  async function sendResetEmail(e: React.FormEvent) {
+    e.preventDefault()
+    setLoading(true)
+    setMessage(null)
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    })
+    if (error) setMessage(`Fout: ${error.message}`)
+    else setMessage('Reset-link verstuurd! Controleer je e-mail.')
+    setLoading(false)
+  }
+
   return (
     <div className="max-w-md mx-auto">
       <Card className="backdrop-blur-xl bg-white/10 border-white/10">
@@ -36,20 +49,39 @@ export default function LoginPage() {
           <CardTitle>Inloggen</CardTitle>
         </CardHeader>
         <CardContent>
-          <form onSubmit={signIn} className="space-y-4">
-            <div className="space-y-2">
-              <Label>Email</Label>
-              <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-            </div>
-            <div className="space-y-2">
-              <Label>Wachtwoord</Label>
-              <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
-            </div>
-            <Button type="submit" disabled={loading}>{loading ? 'Inloggen...' : 'Inloggen'}</Button>
-          </form>
-          <Button variant="ghost" className="mt-4" onClick={signOut}>Uitloggen</Button>
-          {message && <p className="mt-4 text-sm">{message}</p>}
-          <p className="mt-4 text-xs text-zinc-300">Maak een user in Supabase Auth en zet je rol op admin in de <code>users</code> tabel.</p>
+          {!resetMode ? (
+            <>
+              <form onSubmit={signIn} className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Email</Label>
+                  <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                </div>
+                <div className="space-y-2">
+                  <Label>Wachtwoord</Label>
+                  <Input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+                </div>
+                <Button type="submit" disabled={loading}>{loading ? 'Inloggen...' : 'Inloggen'}</Button>
+              </form>
+              <div className="flex gap-2 mt-4">
+                <Button variant="ghost" onClick={signOut}>Uitloggen</Button>
+                <Button variant="ghost" onClick={() => setResetMode(true)}>Wachtwoord vergeten?</Button>
+              </div>
+              {message && <p className="mt-4 text-sm">{message}</p>}
+              <p className="mt-4 text-xs text-zinc-300">Maak een user in Supabase Auth en zet je rol op admin in de <code>users</code> tabel.</p>
+            </>
+          ) : (
+            <>
+              <form onSubmit={sendResetEmail} className="space-y-4">
+                <div className="space-y-2">
+                  <Label>Email</Label>
+                  <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                </div>
+                <Button type="submit" disabled={loading}>{loading ? 'Versturen...' : 'Reset-link versturen'}</Button>
+              </form>
+              <Button variant="ghost" className="mt-4" onClick={() => setResetMode(false)}>Terug naar inloggen</Button>
+              {message && <p className="mt-4 text-sm">{message}</p>}
+            </>
+          )}
         </CardContent>
       </Card>
     </div>

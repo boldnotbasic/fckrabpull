@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -26,6 +26,7 @@ export default function AdminMatchDetailPage() {
   const supabase = createClient()
   const params = useParams<{ id: string }>()
   const matchId = params.id
+  const router = useRouter()
 
   const [match, setMatch] = useState<Match | null>(null)
   const [players, setPlayers] = useState<Player[]>([])
@@ -143,6 +144,16 @@ export default function AdminMatchDetailPage() {
     else { setPoll(null); setPollMsg('✓ Poll gesloten') }
   }
 
+  async function deleteMatch() {
+    if (!window.confirm('Weet je zeker dat je deze match wilt verwijderen?\n\nAlle doelpunten, assists, aanwezigheden en stemmingen worden ook verwijderd.')) return
+    const { error } = await supabase.from('matches').delete().eq('id', matchId)
+    if (error) {
+      alert('✗ ' + error.message)
+    } else {
+      router.push('/admin/matches')
+    }
+  }
+
   async function loadMotmResults(mid: string) {
     const { data } = await supabase
       .from('v_motm_results')
@@ -189,6 +200,7 @@ export default function AdminMatchDetailPage() {
           </h1>
           <p className="text-sm" style={{ color: 'oklch(0.65 0.05 280)' }}>{match?.date} — {match?.kickoff?.slice(0, 5)}</p>
         </div>
+        <Button variant="destructive" onClick={deleteMatch} className="ml-auto">Verwijderen</Button>
       </div>
 
       {/* Score */}

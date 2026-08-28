@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Users, Calendar, Shield, ArrowRight, Settings, Trophy } from 'lucide-react'
+import { Users, Calendar, Shield, ArrowRight, Settings, Trophy, Download } from 'lucide-react'
 
 const glass = {
   background: 'oklch(1 0 0 / 8%)',
@@ -36,6 +36,13 @@ const sections = [
     label: 'Trofeënkast',
     desc: 'Trofeeën toevoegen & beheren',
     gradient: 'linear-gradient(135deg, oklch(0.65 0.2 45), oklch(0.55 0.22 60))',
+  },
+  {
+    href: '/admin/export',
+    icon: Download,
+    label: 'Exporteren',
+    desc: 'CSV-download en wekelijkse e-mail',
+    gradient: 'linear-gradient(135deg, oklch(0.6 0.2 80), oklch(0.5 0.22 50))',
   },
   {
     href: '/login',
