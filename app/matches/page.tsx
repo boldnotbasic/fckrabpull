@@ -79,8 +79,8 @@ export default async function MatchesPage() {
               <Link key={match.id} href={`/admin/matches/${match.id}`} className="block">
               <Card className="hover:shadow-xl transition-all backdrop-blur-xl bg-white/10 border-white/10 cursor-pointer">
                 <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-2">
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2">
                         <CalendarIcon className="h-4 w-4" style={{ color: 'oklch(0.65 0.05 280)' }} />
                         <span className="text-sm" style={{ color: 'oklch(0.65 0.05 280)' }}>
@@ -96,6 +96,11 @@ export default async function MatchesPage() {
                           <img src={match.teams.emblem_url} alt="embleem" className="h-6 w-6 rounded" />
                         )}
                       </CardTitle>
+                      {match.status === 'finished' && match.our_score !== null && (
+                        <div className="sm:hidden text-2xl font-bold mb-2 text-white">
+                          {match.our_score} - {match.opponent_score}
+                        </div>
+                      )}
                       {match.venue && (
                         <div className="flex items-center gap-2 text-sm" style={{ color: 'oklch(0.65 0.05 280)' }}>
                           <MapPin className="h-4 w-4" />
@@ -103,10 +108,10 @@ export default async function MatchesPage() {
                         </div>
                       )}
                     </div>
-                    <div className="text-right">
+                    <div className="text-right max-sm:mt-2">
                       {getStatusBadge(match.status)}
                       {match.status === 'finished' && match.our_score !== null && (
-                        <div className="text-3xl font-bold mt-2 text-white">
+                        <div className="hidden sm:block text-3xl font-bold mt-2 text-white">
                           {match.our_score} - {match.opponent_score}
                         </div>
                       )}

@@ -82,16 +82,16 @@ export default async function PlayersPage() {
                         </div>
                       </div>
                       <div className="grid grid-cols-4 gap-2 mt-4 w-full">
-                        <div className="flex items-center justify-center gap-1 rounded-md px-2 py-1 text-xs" style={{ background: 'oklch(1 0 0 / 10%)', border: '1px solid oklch(1 0 0 / 12%)' }}>
+                        <div className="flex items-center justify-center gap-1 max-sm:flex-col rounded-md px-2 py-1 text-xs" style={{ background: 'oklch(1 0 0 / 10%)', border: '1px solid oklch(1 0 0 / 12%)' }}>
                           <Target className="h-3 w-3" /> {goals}
                         </div>
-                        <div className="flex items-center justify-center gap-1 rounded-md px-2 py-1 text-xs" style={{ background: 'oklch(1 0 0 / 10%)', border: '1px solid oklch(1 0 0 / 12%)' }}>
+                        <div className="flex items-center justify-center gap-1 max-sm:flex-col rounded-md px-2 py-1 text-xs" style={{ background: 'oklch(1 0 0 / 10%)', border: '1px solid oklch(1 0 0 / 12%)' }}>
                           <Zap className="h-3 w-3" /> {assists}
                         </div>
-                        <div className="flex items-center justify-center gap-1 rounded-md px-2 py-1 text-xs" style={{ background: 'oklch(1 0 0 / 10%)', border: '1px solid oklch(1 0 0 / 12%)' }}>
+                        <div className="flex items-center justify-center gap-1 max-sm:flex-col rounded-md px-2 py-1 text-xs" style={{ background: 'oklch(1 0 0 / 10%)', border: '1px solid oklch(1 0 0 / 12%)' }}>
                           <Square className="h-3 w-3" style={{ color: '#f5d90a' }} /> {yellows}
                         </div>
-                        <div className="flex items-center justify-center gap-1 rounded-md px-2 py-1 text-xs" style={{ background: 'oklch(1 0 0 / 10%)', border: '1px solid oklch(1 0 0 / 12%)' }}>
+                        <div className="flex items-center justify-center gap-1 max-sm:flex-col rounded-md px-2 py-1 text-xs" style={{ background: 'oklch(1 0 0 / 10%)', border: '1px solid oklch(1 0 0 / 12%)' }}>
                           <Square className="h-3 w-3" style={{ color: '#e5484d' }} /> {reds}
                         </div>
                       </div>
