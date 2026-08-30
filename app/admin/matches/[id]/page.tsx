@@ -43,6 +43,7 @@ export default function AdminMatchDetailPage() {
   const [poll, setPoll] = useState<any | null>(null)
   const [pollMsg, setPollMsg] = useState<string | null>(null)
   const [motmResults, setMotmResults] = useState<any[]>([])
+  const [role, setRole] = useState<string | null>(null)
 
   const baseUrl = (typeof window !== 'undefined' && (window as any).location?.origin)
     ? (window as any).location.origin
@@ -95,6 +96,17 @@ export default function AdminMatchDetailPage() {
 
   useEffect(() => { if (matchId) loadAll() }, [matchId])
 
+  useEffect(() => {
+    async function loadUser() {
+      const { data: { user } } = await supabase.auth.getUser()
+      if (user) {
+        const { data: u } = await supabase.from('users').select('role').eq('id', user.id).maybeSingle()
+        setRole(u?.role || null)
+      }
+    }
+    loadUser()
+  }, [])
+
   async function saveScore(e: React.FormEvent) {
     e.preventDefault()
     const { error } = await supabase.from('matches').update({
@@ -138,6 +150,10 @@ export default function AdminMatchDetailPage() {
 
   async function closePoll() {
     if (!poll) return
+    if (role !== 'admin' && role !== 'manager') {
+      setPollMsg('✗ Je hebt geen rechten om de poll te sluiten.')
+      return
+    }
     setPollMsg(null)
     const { error } = await supabase
       .from('motm_polls')
@@ -360,7 +376,9 @@ export default function AdminMatchDetailPage() {
               >
                 Kopieer link
               </Button>
-              <Button onClick={closePoll} variant="destructive">Poll sluiten</Button>
+              {(role === 'admin' || role === 'manager') && (
+                <Button onClick={closePoll} variant="destructive">Poll sluiten</Button>
+              )}
             </div>
           </div>
         ) : (
