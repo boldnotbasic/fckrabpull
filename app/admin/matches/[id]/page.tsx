@@ -154,6 +154,32 @@ export default function AdminMatchDetailPage() {
     }
   }
 
+  async function resetMatch() {
+    if (!window.confirm('Weet je zeker dat je deze match wilt resetten?\n\nAlle doelpunten, assists, aanwezigheden, stemmingen en scores worden verwijderd. De match blijft bestaan maar wordt teruggezet naar "scheduled".')) return
+    
+    await supabase.from('match_events').delete().eq('match_id', matchId)
+    await supabase.from('match_attendance').delete().eq('match_id', matchId)
+    const { data: polls } = await supabase.from('motm_polls').select('id').eq('match_id', matchId)
+    if (polls && polls.length > 0) {
+      for (const p of polls) {
+        await supabase.from('motm_votes').delete().eq('poll_id', p.id)
+      }
+      await supabase.from('motm_polls').delete().eq('match_id', matchId)
+    }
+    
+    const { error } = await supabase
+      .from('matches')
+      .update({ our_score: null, opponent_score: null, status: 'scheduled' })
+      .eq('id', matchId)
+    
+    if (error) {
+      alert('✗ ' + error.message)
+    } else {
+      alert('✓ Match gereset')
+      loadAll()
+    }
+  }
+
   async function loadMotmResults(mid: string) {
     const { data } = await supabase
       .from('v_motm_results')
@@ -200,7 +226,10 @@ export default function AdminMatchDetailPage() {
           </h1>
           <p className="text-sm" style={{ color: 'oklch(0.65 0.05 280)' }}>{match?.date} — {match?.kickoff?.slice(0, 5)}</p>
         </div>
-        <Button variant="destructive" onClick={deleteMatch} className="ml-auto">Verwijderen</Button>
+        <div className="ml-auto flex gap-2">
+          <Button variant="outline" onClick={resetMatch}>Reset</Button>
+          <Button variant="destructive" onClick={deleteMatch}>Verwijderen</Button>
+        </div>
       </div>
 
       {/* Score */}
@@ -228,7 +257,11 @@ export default function AdminMatchDetailPage() {
           <div className="space-y-1.5 md:col-span-2">
             <Label className="text-sm" style={{ color: 'oklch(0.75 0.05 280)' }}>Doelpuntenmaker *</Label>
             <Select value={scorerId} onValueChange={(v) => setScorerId(v ?? '')}>
-              <SelectTrigger><SelectValue placeholder="Kies speler" /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue>
+                  {(v: any) => (v ? players.find(p => p.id === v)?.full_name : 'Kies speler') ?? 'Kies speler'}
+                </SelectValue>
+              </SelectTrigger>
               <SelectContent>
                 {players.map(p => <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>)}
               </SelectContent>
@@ -237,7 +270,11 @@ export default function AdminMatchDetailPage() {
           <div className="space-y-1.5">
             <Label className="text-sm" style={{ color: 'oklch(0.75 0.05 280)' }}>Assist</Label>
             <Select value={assistId} onValueChange={(v) => setAssistId(v ?? '')}>
-              <SelectTrigger><SelectValue placeholder="Geen" /></SelectTrigger>
+              <SelectTrigger>
+                <SelectValue>
+                    {(v: any) => (v ? players.find(p => p.id === v)?.full_name : 'Geen') ?? 'Geen'}
+                </SelectValue>
+              </SelectTrigger>
               <SelectContent>
                 <SelectItem value="">Geen</SelectItem>
                 {players.map(p => <SelectItem key={p.id} value={p.id}>{p.full_name}</SelectItem>)}
@@ -245,8 +282,8 @@ export default function AdminMatchDetailPage() {
             </Select>
           </div>
           <div className="space-y-1.5">
-            <Label className="text-sm" style={{ color: 'oklch(0.75 0.05 280)' }}>Minuut</Label>
-            <Input type="number" value={minute} onChange={(e) => setMinute(e.target.value)} min={0} max={60} placeholder="bv. 35" />
+            <Label className="text-sm" style={{ color: 'oklch(0.75 0.05 280)' }}>Minuut (optioneel)</Label>
+            <Input type="number" value={minute} onChange={(e) => setMinute(e.target.value)} placeholder="bv. 35" />
           </div>
           <div className="md:col-span-4 flex items-center gap-3">
             <Button type="submit" style={{ background: 'linear-gradient(135deg, oklch(0.72 0.2 305), oklch(0.6 0.22 25))' }}>Goal toevoegen</Button>

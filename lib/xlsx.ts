@@ -16,9 +16,16 @@ interface AttendanceRow {
   attendance_rate: number
 }
 
+interface MotmRow {
+  player_id: string
+  full_name: string
+  titles: number
+}
+
 export function buildStatsXlsx(
   stats: StatsRow[],
-  attendance: AttendanceRow[]
+  attendance: AttendanceRow[],
+  motm: MotmRow[]
 ): Buffer {
   const wb = XLSX.utils.book_new()
 
@@ -53,6 +60,15 @@ export function buildStatsXlsx(
     ...attendanceRows,
   ])
   XLSX.utils.book_append_sheet(wb, attendanceSheet, 'Aanwezigheden')
+
+  const motmRows = [...motm]
+    .sort((a, b) => Number(b.titles) - Number(a.titles))
+    .map((m) => [m.full_name, Number(m.titles)])
+  const motmSheet = XLSX.utils.aoa_to_sheet([
+    ['Speler', 'MOTM Titels'],
+    ...motmRows,
+  ])
+  XLSX.utils.book_append_sheet(wb, motmSheet, 'Man of the Match')
 
   return XLSX.write(wb, { type: 'buffer', bookType: 'xlsx' })
 }

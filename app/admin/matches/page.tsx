@@ -120,7 +120,7 @@ export default function AdminMatchesPage() {
       setSeasons(s || [])
       const active = (s || []).find(x => (x as any).active)
       if (active) setSeasonId(active.id)
-      const { data: r } = await supabase.from('matches').select('id, date, kickoff, is_home, opponent_team_id, teams:opponent_team_id(name)').order('created_at', { ascending: false }).limit(1000)
+      const { data: r } = await supabase.from('matches').select('id, date, kickoff, is_home, opponent_team_id, teams:opponent_team_id(name)').order('date', { ascending: true }).limit(1000)
       setRecent(r || [])
     }
     load()
@@ -172,7 +172,7 @@ export default function AdminMatchesPage() {
       if (error) throw error
       setMessage('✓ Match toegevoegd!')
       setDate(''); setKickoff('20:00'); setIsHome(true); setOpponentTeamId('')
-      const { data: r } = await supabase.from('matches').select('id, date, kickoff, is_home, teams:opponent_team_id(name)').order('created_at', { ascending: false }).limit(1000)
+      const { data: r } = await supabase.from('matches').select('id, date, kickoff, is_home, teams:opponent_team_id(name)').order('date', { ascending: true }).limit(1000)
       setRecent(r || [])
     } catch (err: any) {
       setMessage('✗ ' + (err.message || 'Er ging iets mis'))
@@ -267,7 +267,7 @@ export default function AdminMatchesPage() {
       }
       setIcsStatus(`✓ ${imported} matchen geïmporteerd${skipped > 0 ? ` (${skipped} overgeslagen)` : ''}`)
       setIcsEvents([])
-      const { data: r } = await supabase.from('matches').select('id, date, kickoff, is_home, opponent_team_id, teams:opponent_team_id(name)').order('created_at', { ascending: false }).limit(1000)
+      const { data: r } = await supabase.from('matches').select('id, date, kickoff, is_home, opponent_team_id, teams:opponent_team_id(name)').order('date', { ascending: true }).limit(1000)
       setRecent(r || [])
     } catch (err: any) {
       setIcsStatus('✗ ' + (err.message || 'Importeren mislukt'))
@@ -352,7 +352,7 @@ export default function AdminMatchesPage() {
         {recent.length === 0 ? (
           <p className="text-sm" style={{ color: 'oklch(0.65 0.05 280)' }}>Nog geen matchen gepland.</p>
         ) : (
-          <div className="space-y-2">
+          <div className="space-y-4">
             {recent.map((m) => (
               <div key={m.id} className="flex items-center justify-between p-3 rounded-xl" style={{ background: 'oklch(1 0 0 / 5%)', border: '1px solid oklch(1 0 0 / 8%)' }}>
                 <div>

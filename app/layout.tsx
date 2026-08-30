@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import Link from "next/link";
+import Image from "next/image";
 import NavSidebar from "@/components/NavSidebar";
 import SplashScreen from "@/components/SplashScreen";
 import PWAInstall from "@/components/pwa/PWAInstall";
@@ -51,7 +52,10 @@ export default function RootLayout({
               borderBottom: "1px solid oklch(1 0 0 / 10%)",
             }}
           >
-            <Link href="/" className="font-semibold text-white">FC Krabpull</Link>
+            <Link href="/" className="flex items-center gap-2">
+              <Image src="/Logo ZVC.png" alt="FC Krabpull" width={32} height={32} className="rounded-lg" />
+              <span className="font-semibold text-white">FC Krabpull</span>
+            </Link>
             <div className="flex gap-3 text-sm">
               <Link href="/admin" className="text-white/70 hover:text-white">Admin</Link>
               <Link href="/login" className="text-white/70 hover:text-white">Login</Link>

@@ -10,15 +10,23 @@ import { nl } from 'date-fns/locale'
 export default async function MatchesPage() {
   const supabase = await createClient()
   
-  const { data: matches, error } = await supabase
+  const { data: allMatches, error } = await supabase
     .from('matches')
     .select('*, seasons(name), teams:opponent_team_id(id, name, emblem_url)')
-    .order('date', { ascending: false })
-    .limit(20)
+    .limit(1000)
 
   if (error) {
     console.error('Error fetching matches:', error)
   }
+
+  const matches = allMatches ? [...allMatches].sort((a, b) => {
+    if (a.status === 'scheduled' && b.status !== 'scheduled') return -1
+    if (a.status !== 'scheduled' && b.status === 'scheduled') return 1
+    if (a.status === 'scheduled' && b.status === 'scheduled') {
+      return new Date(a.date).getTime() - new Date(b.date).getTime()
+    }
+    return new Date(b.date).getTime() - new Date(a.date).getTime()
+  }) : []
 
   const getStatusBadge = (status: string) => {
     const variants: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
@@ -68,7 +76,8 @@ export default async function MatchesPage() {
         ) : (
           <div className="space-y-4">
             {matches.map((match: any) => (
-              <Card key={match.id} className="hover:shadow-xl transition-all backdrop-blur-xl bg-white/10 border-white/10">
+              <Link key={match.id} href={`/admin/matches/${match.id}`} className="block">
+              <Card className="hover:shadow-xl transition-all backdrop-blur-xl bg-white/10 border-white/10 cursor-pointer">
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -105,6 +114,7 @@ export default async function MatchesPage() {
                   </div>
                 </CardHeader>
               </Card>
+              </Link>
             ))}
           </div>
         )}

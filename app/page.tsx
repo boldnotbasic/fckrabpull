@@ -115,16 +115,16 @@ export default async function Home() {
       </div>
 
       {/* Next match banner */}
-      <div className="rounded-2xl p-5 md:p-6" style={glass}>
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#d4a517' }}>
-            Volgende Match
-          </span>
-          <Link href="/matches" className="text-xs flex items-center gap-1 hover:text-white transition-colors" style={{ color: 'oklch(0.65 0.05 280)' }}>
-            Alle matchen <ArrowRight className="h-3 w-3" />
-          </Link>
-        </div>
-        {nextMatch ? (
+      {nextMatch ? (
+        <Link href={`/admin/matches/${nextMatch.id}`} className="block rounded-2xl p-5 md:p-6 cursor-pointer hover:shadow-xl transition-all" style={glass}>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#d4a517' }}>
+              Volgende Match
+            </span>
+            <span className="text-xs flex items-center gap-1 hover:text-white transition-colors" style={{ color: 'oklch(0.65 0.05 280)' }}>
+              <Link href="/matches">Alle matchen <ArrowRight className="h-3 w-3 inline" /></Link>
+            </span>
+          </div>
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
               <div className="text-2xl font-bold text-white mb-1 flex items-center gap-3">
@@ -157,13 +157,23 @@ export default async function Home() {
               {nextMatch.is_home ? 'Thuis' : 'Uit'}
             </div>
           </div>
-        ) : (
+        </Link>
+      ) : (
+        <div className="rounded-2xl p-5 md:p-6" style={glass}>
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-semibold uppercase tracking-widest" style={{ color: '#d4a517' }}>
+              Volgende Match
+            </span>
+            <Link href="/matches" className="text-xs flex items-center gap-1 hover:text-white transition-colors" style={{ color: 'oklch(0.65 0.05 280)' }}>
+              Alle matchen <ArrowRight className="h-3 w-3" />
+            </Link>
+          </div>
           <p style={{ color: 'oklch(0.65 0.05 280)' }}>
             Geen aankomende matchen gepland.{' '}
             <Link href="/admin/matches" className="underline hover:text-white">Voeg een match toe</Link>
           </p>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Nav cards grid */}
       <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 lg:grid-cols-4">

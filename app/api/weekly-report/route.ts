@@ -40,15 +40,16 @@ export async function POST(request: Request) {
 
     const { data: stats, error: statsError } = await supabase.rpc('get_player_stats')
     const { data: attendance, error: attendanceError } = await supabase.rpc('get_player_attendance_stats')
+    const { data: motm, error: motmError } = await supabase.from('v_motm_title_counts').select('*')
 
-    if (statsError || attendanceError) {
+    if (statsError || attendanceError || motmError) {
       return NextResponse.json(
-        { error: statsError?.message || attendanceError?.message || 'Data ophalen mislukt' },
+        { error: statsError?.message || attendanceError?.message || motmError?.message || 'Data ophalen mislukt' },
         { status: 500 }
       )
     }
 
-    const xlsx = buildStatsXlsx(stats ?? [], attendance ?? [])
+    const xlsx = buildStatsXlsx(stats ?? [], attendance ?? [], motm ?? [])
     const xlsxBase64 = xlsx.toString('base64')
 
     const resendKey = process.env.RESEND_API_KEY

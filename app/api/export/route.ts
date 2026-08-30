@@ -8,6 +8,7 @@ export async function GET() {
 
   const { data: stats, error: statsError } = await supabase.rpc('get_player_stats')
   const { data: attendance, error: attendanceError } = await supabase.rpc('get_player_attendance_stats')
+  const { data: motm, error: motmError } = await supabase.from('v_motm_title_counts').select('*')
 
   if (statsError) {
     return new Response(JSON.stringify({ error: statsError.message }), {
@@ -23,7 +24,14 @@ export async function GET() {
     })
   }
 
-  const xlsx = buildStatsXlsx(stats ?? [], attendance ?? [])
+  if (motmError) {
+    return new Response(JSON.stringify({ error: motmError.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
+
+  const xlsx = buildStatsXlsx(stats ?? [], attendance ?? [], motm ?? [])
 
   return new Response(new Uint8Array(xlsx), {
     headers: {
