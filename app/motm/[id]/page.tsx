@@ -70,8 +70,10 @@ export default function MotmPollPage() {
         if (v) setHasVoted(true)
       }
 
-      // Load results
-      await loadResults(pol.match_id)
+      // Load results only when poll is closed
+      if (pol.status !== 'open') {
+        await loadResults(pol.match_id)
+      }
     } catch (e: any) {
       setError(e.message || 'Er ging iets mis bij het laden')
     } finally {
@@ -105,7 +107,6 @@ export default function MotmPollPage() {
     } else {
       setHasVoted(true)
       setVoteMsg('✓ Stem geregistreerd!')
-      loadResults(poll.match_id)
     }
   }
 
@@ -179,8 +180,10 @@ export default function MotmPollPage() {
 
           {/* Results */}
           <div className="rounded-2xl p-6" style={glass}>
-            <h2 className="font-semibold text-white mb-5">Tussenstand</h2>
-            {results.length === 0 ? (
+            <h2 className="font-semibold text-white mb-5">Uitslag</h2>
+            {pollOpen ? (
+              <p className="text-sm" style={{ color: 'oklch(0.65 0.05 280)' }}>De uitslag wordt getoond zodra de poll is afgesloten.</p>
+            ) : results.length === 0 ? (
               <p className="text-sm" style={{ color: 'oklch(0.65 0.05 280)' }}>Nog geen stemmen.</p>
             ) : (
               <div className="space-y-2">

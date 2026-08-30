@@ -77,17 +77,20 @@ export default function AdminMatchDetailPage() {
       .order('minute')
     setGoals((g || []) as any)
 
-    // Load open MOTM poll for this match
+    // Load latest MOTM poll for this match
     const { data: pol } = await supabase
       .from('motm_polls')
       .select('*')
       .eq('match_id', matchId)
-      .eq('status', 'open')
+      .order('created_at', { ascending: false })
+      .limit(1)
       .maybeSingle()
-    setPoll(pol || null)
+    setPoll(pol?.status === 'open' ? pol : null)
 
-    // Load MOTM results for this match
-    await loadMotmResults(matchId)
+    // Load MOTM results for this match only when no open poll
+    if (!pol || pol.status !== 'open') {
+      await loadMotmResults(matchId)
+    }
   }
 
   useEffect(() => { if (matchId) loadAll() }, [matchId])
@@ -140,8 +143,13 @@ export default function AdminMatchDetailPage() {
       .from('motm_polls')
       .update({ status: 'closed', closes_at: new Date().toISOString() })
       .eq('id', poll.id)
-    if (error) setPollMsg('✗ ' + error.message)
-    else { setPoll(null); setPollMsg('✓ Poll gesloten') }
+    if (error) {
+      setPollMsg('✗ ' + error.message)
+    } else {
+      setPoll(null)
+      setPollMsg('✓ Poll gesloten')
+      await loadMotmResults(matchId)
+    }
   }
 
   async function deleteMatch() {
@@ -369,7 +377,9 @@ export default function AdminMatchDetailPage() {
 
         {/* Live resultaten */}
         <div className="mt-5 space-y-2">
-          {motmResults.length === 0 ? (
+          {poll ? (
+            <p className="text-xs" style={{ color: 'oklch(0.65 0.05 280)' }}>Uitslag wordt getoond nadat de poll is gesloten.</p>
+          ) : motmResults.length === 0 ? (
             <p className="text-xs" style={{ color: 'oklch(0.65 0.05 280)' }}>Nog geen stemmen.</p>
           ) : (
             motmResults.map((r) => {
